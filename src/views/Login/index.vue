@@ -25,14 +25,13 @@
 </template>
 
 <script>
-
 export default {
   name: 'Login',
   data() {
     return {
-      remember: true,
+      remember: false,
       loginForm: {
-        username: 'dome',
+        username: 'demo',
         password: 'zh@hm#23'
       },
       rules: {
@@ -49,7 +48,19 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!')
+          this.loading = true
+          this.$store.dispatch('user/login', this.loginForm).then(() => {
+            this.$message.success('登录成功')
+            this.$router.push({ path: this.redirect || '/' })
+            this.loading = false
+          }).catch(() => {
+            this.loading = false
+          })
+          if (!this.remember) {
+            return false
+          } else {
+            localStorage.setItem('userInfo', JSON.stringify(this.loginForm))
+          }
         } else {
           console.log('error submit!!')
           return false

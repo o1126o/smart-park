@@ -7,11 +7,8 @@
           <span class="name">黑马管理员</span>
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
-          <router-link to="/">
-            <el-dropdown-item> 首页 </el-dropdown-item>
-          </router-link>
-          <a target="_blank">
-            <el-dropdown-item> 项目地址 </el-dropdown-item>
+          <a target="_blank" href="https://panjiachen.github.io/vue-element-admin-site/#/">
+            <el-dropdown-item>修改密码</el-dropdown-item>
           </a>
           <el-dropdown-item divided @click.native="logout">
             <span style="display: block">退出登录</span>
@@ -26,7 +23,8 @@
 export default {
   methods: {
     // 退出登录
-    logout() {
+    async logout() {
+      await this.$store.dispatch('user/loginout')
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     }
   }

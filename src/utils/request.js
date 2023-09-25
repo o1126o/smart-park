@@ -1,12 +1,18 @@
 import axios from 'axios'
-const service = axios.create({
-  baseURL: 'https://api-hmzs.itheima.net/v1',
+import store from '@/store'
+
+const request = axios.create({
+  baseURL: 'https://api-hmzs.itheima.net/api',
   timeout: 5000 // request timeout
 })
 
 // 请求拦截器
-service.interceptors.request.use(
+request.interceptors.request.use(
   config => {
+    // 请求头token
+    if (store.getters.token) {
+      config.headers.Authorization = store.getters.token
+    }
     return config
   },
   error => {
@@ -15,7 +21,7 @@ service.interceptors.request.use(
 )
 
 // 响应拦截器
-service.interceptors.response.use(
+request.interceptors.response.use(
   response => {
     return response.data
   },
@@ -23,12 +29,5 @@ service.interceptors.response.use(
     return Promise.reject(error)
   }
 )
-const request = (config) => {
-  if (config.method?.toLocaleLowerCase() === 'get') {
-    config.params = config.data
-    delete config.data
-  }
-  return service.request(config)
-}
 
 export default request

@@ -30,7 +30,9 @@ export default {
   width: 100%;
   position: relative;
   overflow-y: auto;
-  background-color: #fff;
-  padding: 20px 20px 0;
+}
+::-webkit-scrollbar {
+  /*隐藏滚轮*/
+  display: none;
 }
 </style>
